@@ -1,0 +1,26 @@
+name: My First Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Start Pipeline
+        run: echo "GitHub Actions Pipeline Started"
+
+      - name: Check Files
+        run: ls -la
+
+      - name: Build
+        run: echo "Build completed successfully"
+
+      - name: Finish
+        run: echo "Pipeline completed successfully"
