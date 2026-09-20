@@ -1,4 +1,4 @@
-name: My First Pipeline
+name: Terraform Pipeline
 
 on:
   push:
@@ -6,21 +6,21 @@ on:
       - main
 
 jobs:
-  build:
+  terraform:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Start Pipeline
-        run: echo "GitHub Actions Pipeline Started"
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-      - name: Show Files
-        run: ls -la
+      - name: Terraform Init
+        run: terraform init
 
-      - name: Build
-        run: echo "Build completed successfully"
+      - name: Terraform Validate
+        run: terraform validate
 
-      - name: Finish
-        run: echo "Pipeline completed successfully"
+      - name: Terraform Plan
+        run: terraform plan
