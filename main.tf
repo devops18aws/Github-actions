@@ -1,20 +1,33 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-    }
-  }
-}
+name: Terraform Pipeline
 
-provider "aws" {
-  region = "ap-south-1"
-}
+on:
+  push:
+    branches:
+      - main
 
-resource "aws_s3_bucket" "demo" {
-  bucket = "praneeth-tf-github-actions-20260920-847293"
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
 
-  tags = {
-    Name        = "Terraform-GitHub-Actions"
-    Environment = "Dev"
-  }
-}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
